@@ -8,6 +8,7 @@ const TodoList = ({ tasks, onDelete, onMarkCompleted, onMarkAsProcessing, taskCa
     return (
         <div>
             <div className="todo-list">
+                <h1 className='mb-2 text-lg'>Danh sách công việc</h1>
                 {tasks.map(task => (
                     <div key={task.id}>
                         <Link to={`/task/${task.id}`}>

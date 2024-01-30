@@ -2,7 +2,13 @@
 import React, { useState } from 'react';
 import { connect, useDispatch } from 'react-redux';
 import { useParams, useNavigate } from 'react-router-dom';
-
+import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
+import CheckIcon from '@mui/icons-material/Check';
+import EditNoteIcon from '@mui/icons-material/EditNote';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { Button, TextField, FormControl } from '@mui/material';
+import SaveIcon from '@mui/icons-material/Save';
+import CloseIcon from '@mui/icons-material/Close';
 const TaskDetails = ({ tasks, onDelete, onMarkCompleted, onMarkAsProcessing }) => {
     const [isCompletedVisible, setIsCompletedVisible] = useState(true);
     const [isProcessingVisible, setIsProcessingVisible] = useState(true);
@@ -53,36 +59,51 @@ const TaskDetails = ({ tasks, onDelete, onMarkCompleted, onMarkAsProcessing }) =
 
     return (
         <div>
-            <h1 className='text-lg'>Chi tiết công việc</h1>
-            <button className='p-2 bg-yellow-400 text-white' onClick={handlecomeback}>Quay lại</button>
+            <Button
+                variant="contained"
+                className='p-2 bg-yellow-400 text-white'
+                startIcon={<KeyboardBackspaceIcon />}
+                style={{ backgroundColor: '#000' }}
+                onClick={handlecomeback}
+            >
+                Quay lại
+            </Button>
+            <h1 className='text-lg mb-3'>Chi tiết công việc</h1>
             {isEditing ? (
-                <form>
-                    <input
-                        type="text"
-                        value={editedTask}
-                        onChange={(e) => setEditedTask(e.target.value)}
-                    />
-                    <button type="button" onClick={handleEditSave}>
-                        Lưu
-                    </button>
-                    <button type="button" onClick={handleEditCancel}>
-                        Hủy
-                    </button>
-                </form>
+                <div className='text-center '>
+                    <FormControl fullWidth>
+                        <TextField
+                            type="text"
+                            value={editedTask}
+                            onChange={(e) => setEditedTask(e.target.value)}
+                            style={{ marginBottom: '10px', textAlign: 'center' }}
+                        />
+                    </FormControl>
+                    <div className='flex center justify-center'>
+                        <Button startIcon=<SaveIcon /> variant="contained" color="primary" onClick={handleEditSave} style={{ margin: '0 10px', textAlign: 'center' }} >
+                            Lưu
+                        </Button>
+                        <Button startIcon=<CloseIcon /> variant="contained" color="secondary" onClick={handleEditCancel}>
+                            Hủy
+                        </Button>
+
+                    </div>
+
+                </div>
             ) : (
                 <>
-                    <p className='mt-5 mb-5 text-base'>Công việc: <span className='text-red-600'> {task.content}</span></p>
+                    <p className='mt-5 mb-5 text-base text-center'>Công việc: <span className='text-red-600'> {task.content}</span></p>
                     <div className='flex items-center justify-between'>
                         {!task.completed && isCompletedVisible && (
-                            <button className='p-2 bg-blue-500 text-white' onClick={() => handleMarkAsCompleted(task.id)}>Đánh dấu hoàn thành</button>
+                            <Button startIcon={<CheckIcon />} style={{ backgroundColor: 'blue', color: 'white' }} onClick={() => handleMarkAsCompleted(task.id)}> Hoàn thành</Button>
                         )}
                         {!task.completed && isProcessingVisible && (
-                            <button className='p-2 bg-orange-600' onClick={() => handleMarkAsProcessing(task.id)}>Đánh dấu đang thực hiện</button>
+                            <Button startIcon={<CheckIcon />} style={{ backgroundColor: 'gray', color: 'white' }} className='p-2 bg-orange-600' onClick={() => handleMarkAsProcessing(task.id)}>Đang thực hiện</Button>
                         )}
-                        <button className='p-2 bg-yellow-400 text-white' onClick={startEditing}>Chỉnh sửa</button>
+                        <Button startIcon={<EditNoteIcon />} style={{ backgroundColor: 'orange', color: 'white' }} onClick={startEditing}>Chỉnh sửa</Button>
                     </div>
-                    <div className="text-center">
-                        <button onClick={handleDelete} className='p-2 bg-black text-white mt-2'>Xóa công việc</button>
+                    <div className="text-center m-2">
+                        <Button onClick={handleDelete} startIcon={<DeleteIcon />} style={{ backgroundColor: 'red', color: 'white' }}>Xóa công việc</Button>
                     </div>
                 </>
             )}
